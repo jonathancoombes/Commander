@@ -37,7 +37,7 @@ namespace Commander
             // Singleton: same object used for every request
             // Transient: new instance for every time
             
-            services.AddScoped<ICommanderRepo, MockCommanderRepo>();
+            services.AddScoped<ICommanderRepo, SqlCommanderRepo>();
             
             services.AddSwaggerGen(c =>
             {
