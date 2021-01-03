@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Commander.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,16 +29,16 @@ namespace Commander
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
             services.AddDbContext<CommanderContext>(options => options.UseSqlServer(Configuration["Commander:DefaultConnection"]));
             // Adds Interface for Injection into application where needed
             // Scoped: new object instance created once per client request 
             // Singleton: same object used for every request
             // Transient: new instance for every time
-
+            
             services.AddScoped<ICommanderRepo, MockCommanderRepo>();
-
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Commander", Version = "v1" });
