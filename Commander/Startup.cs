@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Commander.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Commander
 {
@@ -29,7 +30,7 @@ namespace Commander
         {
 
             services.AddControllers();
-
+            services.AddDbContext<CommanderContext>(options => options.UseSqlServer(Configuration["Commander:DefaultConnection"]));
             // Adds Interface for Injection into application where needed
             // Scoped: new object instance created once per client request 
             // Singleton: same object used for every request
