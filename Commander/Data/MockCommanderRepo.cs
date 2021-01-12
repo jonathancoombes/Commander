@@ -4,12 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration.CommandLine;
+using Commander.Dtos;
+using Commander.Data;
+using AutoMapper;
 
 namespace Commander.Data
 {
     public class MockCommanderRepo : ICommanderRepo
+
     {
-        public IEnumerable<Command> GetAppCommands()
+        private readonly IMapper _imapper;
+
+        public MockCommanderRepo(IMapper imapper)
+    {
+            _imapper = imapper;  }   
+        
+        public IEnumerable<CommandReadDto> GetAppCommands()
         {
             var commands = new List<Command>
             {
@@ -18,12 +28,13 @@ namespace Commander.Data
                 new Command {HowTo = "Build DotNet Project", Id = 2, Line = "dotnet build", Platform = "DotNet"}
             };
 
-            return commands;
-        }
+            return _imapper.Map<IEnumerable<CommandReadDto>>(commands);
+                
+                }
 
-        public Command GetCommandById(int Id)
+        public CommandReadDto GetCommandById(int Id)
         {
-           return new Command {HowTo = "Create new DotNet Project", Id = 0, Line = "dotnet new", Platform = "DotNet"};
+            return _imapper.Map<CommandReadDto>(new Command { HowTo = "Create new DotNet Project", Id = 0, Line = "dotnet new" });
         }
     }
 }

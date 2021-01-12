@@ -1,4 +1,5 @@
-﻿using Commander.Models;
+﻿using Commander.Dtos;
+using Commander.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace Commander.Data
 {
     public interface ICommanderRepo
     {
-        IEnumerable<Command> GetAppCommands();
-        Command GetCommandById(int id);
+        IEnumerable<CommandReadDto> GetAppCommands();
+        CommandReadDto GetCommandById(int id);
 
 
     }

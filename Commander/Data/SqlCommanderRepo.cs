@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Commander.Data;
+using Commander.Dtos;
 
 namespace Commander.Data
 {
@@ -20,20 +22,19 @@ namespace Commander.Data
         }
 
 
-        public IEnumerable<Command> GetAppCommands()
+        public IEnumerable<CommandReadDto> GetAppCommands()
         {
 
             var result = _context.Commands.ToList();
 
-            return result;
+            return _mapper.Map<IEnumerable<CommandReadDto>>(result);
 
         }
 
-        Command ICommanderRepo.GetCommandById(int id)
+        public CommandReadDto GetCommandById(int id)
         {
             var result = _context.Commands.SingleOrDefault(p => p.Id == id);
-          
-                return result;
+                return _mapper.Map<CommandReadDto>(result);
             
         }
     }
