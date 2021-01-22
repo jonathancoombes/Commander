@@ -42,12 +42,10 @@ namespace Commander.Data
                     
          }
 
-        public Command GetCommandById(int id)
+        public CommandReadDto GetCommandById(int id)
         {
             var result = _context.Commands.SingleOrDefault(p => p.Id == id);
-                return _mapper.Map<CommandReadDto>(result);
-            
+            return _mapper.Map<CommandReadDto>(result);
         }
-
     }
 }
