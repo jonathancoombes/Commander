@@ -25,5 +25,10 @@ namespace Commander.Data
         {
            return new Command {HowTo = "Create new DotNet Project", Id = 0, Line = "dotnet new", Platform = "DotNet"};
         }
+
+        public void NewCommand(Command cmd)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

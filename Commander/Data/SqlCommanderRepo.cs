@@ -29,12 +29,24 @@ namespace Commander.Data
 
         }
 
-        Command ICommanderRepo.GetCommandById(int id)
+        public void NewCommand(Command cmd)
+        {
+            if (cmd == null)
+            {
+                throw new ArgumentNullException(nameof(cmd));
+            }
+            _context.Commands.Add(cmd);
+            _context.SaveChanges();
+                    
+         }
+
+        public Command GetCommandById(int id)
         {
             var result = _context.Commands.SingleOrDefault(p => p.Id == id);
           
                 return result;
             
         }
+
     }
 }

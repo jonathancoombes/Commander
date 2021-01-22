@@ -12,7 +12,10 @@ namespace Commander.Profiles
     {
         public CommandProfile()
         {
+            //Source -> Destination
+
             CreateMap<Command, CommandReadDto>();
+            CreateMap<CommandWriteDto, Command>();
         }
 
         

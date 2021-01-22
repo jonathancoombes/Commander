@@ -15,7 +15,6 @@ namespace Commander.Controllers
     public class CommandsController : ControllerBase
 
     {
-
         private readonly ICommanderRepo _repositoryRepo;
         private readonly IMapper _mapper;
 
@@ -56,5 +55,16 @@ namespace Commander.Controllers
                 return NotFound();
             }
 
+        //POST Example: api/commands/
+        [HttpPost]
+        public ActionResult<CommandReadDto> NewCommand (CommandWriteDto cmd) {
+
+            var commandModel = _mapper.Map<Command>(cmd);
+
+            _repositoryRepo.NewCommand(commandModel);
+
+            return Ok(_repositoryRepo.GetCommandById(commandModel.Id));
+        
+        }
     }
 }
