@@ -63,7 +63,10 @@ namespace Commander.Controllers
 
             _repositoryRepo.NewCommand(commandModel);
 
-            return Ok(_repositoryRepo.GetCommandById(commandModel.Id));
+            var commandReadDto = _mapper.Map<CommandReadDto>(commandModel);
+
+            return CreatedAtRoute(nameof(GetCommandById), commandReadDto.Id, commandReadDto);
+          
         
         }
     }

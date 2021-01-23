@@ -11,7 +11,6 @@ namespace Commander.Data
     {
         IEnumerable<CommandReadDto> GetAppCommands();
         CommandReadDto GetCommandById(int id);
-
         void NewCommand(Command cmd);
     }
 }
