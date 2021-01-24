@@ -7,6 +7,7 @@ using AutoMapper;
 using Commander.Data;
 using Commander.Models;
 using Commander.Dtos;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Commander.Controllers
 {
@@ -25,39 +26,39 @@ namespace Commander.Controllers
 
         }
 
-        //GET Example: api/commands
+        // GET: api/commands
         [HttpGet]
-            public ActionResult <IEnumerable<CommandReadDto>>GetAllCommands()
+        public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
+        {
+
+            var commandItems = _repositoryRepo.GetAppCommands();
+            if (commandItems != null)
             {
-
-                var commandItems =  _repositoryRepo.GetAppCommands();
-                if(commandItems != null)
-                {
-                    return Ok(_mapper.Map<IEnumerable<CommandReadDto>>(commandItems));
-                }
-                else
-                {
-                    return NoContent();
-                }
-
-
+                return Ok(_mapper.Map<IEnumerable<CommandReadDto>>(commandItems));
             }
-        //GET Example: api/commands/{Id}}
+            else
+            {
+                return NoContent();
+            }
+
+
+        }
+        // GET: api/commands/{Id}}
         [HttpGet("{Id}", Name = "GetCommandById")]
         public ActionResult<CommandReadDto> GetCommandById(int Id)
+        {
+            var commandItem = _repositoryRepo.GetCommandById(Id);
+            if (commandItem != null)
             {
-                var commandItem = _repositoryRepo.GetCommandById(Id);
-                if (commandItem != null)
-                {
-                    return Ok(_mapper.Map<CommandReadDto>(commandItem));
-                }
-
-                return NotFound();
+                return Ok(_mapper.Map<CommandReadDto>(commandItem));
             }
 
-        //POST Example: api/commands/
+            return NotFound();
+        }
+
+        // POST: api/commands/
         [HttpPost]
-        public ActionResult<CommandReadDto> NewCommand (CommandWriteDto cmd) {
+        public ActionResult<CommandReadDto> NewCommand(CommandWriteDto cmd) {
 
             var commandModel = _mapper.Map<Command>(cmd);
 
@@ -66,9 +67,10 @@ namespace Commander.Controllers
             var commandReadDto = _mapper.Map<CommandReadDto>(commandModel);
 
             return CreatedAtRoute(nameof(GetCommandById), new { Id = commandReadDto.Id }, commandReadDto);
-                      
+
         }
 
+        // PUT: api/commands/{Id}
 
         [HttpPut("{Id}")]
         public ActionResult UpdateCommand(CommandUpdateDto updatedCmd, int Id) {
@@ -88,8 +90,42 @@ namespace Commander.Controllers
 
             _repositoryRepo.UpdateCommand(originalCommand);
 
-            return NoContent ();
+            return NoContent();
 
+        }
+
+        // PATCH:  api/commands/{Id}
+
+        [HttpPatch("{Id}")]
+        public ActionResult PartialCommandUpdate(int Id, JsonPatchDocument<CommandUpdateDto> jsonPatchDocument) {
+
+            var originalCommand = _repositoryRepo.GetCommandById(Id);
+
+            //Checking if resource exists
+
+            if (originalCommand == null) {
+                return NotFound();
             }
+            // Mapping originalcommand to a Dto for use
+            var commandToPatch = _mapper.Map<CommandUpdateDto>(originalCommand);
+
+            //Applying the jsonData to commandToPatch model. Using Modelstate for validation check
+
+            jsonPatchDocument.ApplyTo(commandToPatch, ModelState);
+
+            if (!TryValidateModel(commandToPatch)) {
+                return ValidationProblem(ModelState);
+            }
+
+            // Once validation passed, continue to pass updated model to context
+
+            _mapper.Map(commandToPatch, originalCommand);
+
+            _repositoryRepo.UpdateCommand(originalCommand);
+
+            return NoContent();
+        }
+
+
     }
 }
