@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Commander.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
 namespace Commander
 {
@@ -30,7 +31,9 @@ namespace Commander
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(s => {
+            s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
             services.AddDbContext<CommanderContext>(options => options.UseSqlServer(Configuration["Commander:DefaultConnection"]));
             // Adds Interface for Injection into application where needed
             // Scoped: new object instance created once per client request 
