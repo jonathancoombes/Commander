@@ -50,7 +50,8 @@ namespace Commander.Data
 
         public void UpdateCommand(Command cmd)
         {
-           //var result = _context.Commands.
+            _context.Commands.Update(cmd);
+            _context.SaveChanges();
         }
     }
 }

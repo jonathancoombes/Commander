@@ -66,8 +66,30 @@ namespace Commander.Controllers
             var commandReadDto = _mapper.Map<CommandReadDto>(commandModel);
 
             return CreatedAtRoute(nameof(GetCommandById), new { Id = commandReadDto.Id }, commandReadDto);
-
-          
+                      
         }
+
+
+        [HttpPut("{Id}")]
+        public ActionResult UpdateCommand(CommandUpdateDto updatedCmd, int Id) {
+
+            var originalCommand = _repositoryRepo.GetCommandById(Id);
+
+            if (originalCommand == null) {
+                return NotFound("Command was not found");
+            }
+
+            // With this command, the update is allready tracked by the context in EF so, only "save changes is required from the Repo
+            // to persist the changes to the DB..
+
+            _mapper.Map(updatedCmd, originalCommand);
+
+            // For good practice, this is done manually as well..
+
+            _repositoryRepo.UpdateCommand(originalCommand);
+
+            return NoContent ();
+
+            }
     }
 }
