@@ -19,7 +19,7 @@ namespace Commander.Data
     {
             _imapper = imapper;  }   
         
-        public IEnumerable<CommandReadDto> GetAppCommands()
+        public IEnumerable<Command> GetAppCommands()
         {
             var commands = new List<Command>
             {
@@ -28,16 +28,21 @@ namespace Commander.Data
                 new Command {HowTo = "Build DotNet Project", Id = 2, Line = "dotnet build", Platform = "DotNet"}
             };
 
-            return _imapper.Map<IEnumerable<CommandReadDto>>(commands);
+            return _imapper.Map<IEnumerable<Command>>(commands);
                 
                 }
 
-        public CommandReadDto GetCommandById(int Id)
+        public Command GetCommandById(int Id)
         {
-            return _imapper.Map<CommandReadDto>(new Command { HowTo = "Create new DotNet Project", Id = 0, Line = "dotnet new" });
+            return _imapper.Map<Command>(new Command { HowTo = "Create new DotNet Project", Id = 0, Line = "dotnet new" });
         }
 
         public void NewCommand(Command cmd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCommand(Command cmd)
         {
             throw new NotImplementedException();
         }

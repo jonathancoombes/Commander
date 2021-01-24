@@ -9,8 +9,10 @@ namespace Commander.Data
 {
     public interface ICommanderRepo
     {
-        IEnumerable<CommandReadDto> GetAppCommands();
-        CommandReadDto GetCommandById(int id);
+        IEnumerable<Command> GetAppCommands();
+        Command GetCommandById(int id);
         void NewCommand(Command cmd);
+        void UpdateCommand(Command cmd);
+
     }
 }

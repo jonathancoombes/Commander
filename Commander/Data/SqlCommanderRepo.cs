@@ -22,12 +22,12 @@ namespace Commander.Data
         }
 
 
-        public IEnumerable<CommandReadDto> GetAppCommands()
+        public IEnumerable<Command> GetAppCommands()
         {
 
             var result = _context.Commands.ToList();
 
-            return _mapper.Map<IEnumerable<CommandReadDto>>(result);
+            return _mapper.Map<IEnumerable<Command>>(result);
 
         }
 
@@ -42,10 +42,15 @@ namespace Commander.Data
                     
          }
 
-        public CommandReadDto GetCommandById(int id)
+        public Command GetCommandById(int id)
         {
             var result = _context.Commands.SingleOrDefault(p => p.Id == id);
-            return _mapper.Map<CommandReadDto>(result);
+            return _mapper.Map<Command>(result);
+        }
+
+        public void UpdateCommand(Command cmd)
+        {
+           //var result = _context.Commands.
         }
     }
 }
