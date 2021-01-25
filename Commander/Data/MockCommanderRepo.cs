@@ -17,8 +17,13 @@ namespace Commander.Data
 
         public MockCommanderRepo(IMapper imapper)
     {
-            _imapper = imapper;  }   
-        
+            _imapper = imapper;  }
+
+        public void DeleteCommand(Command cmd)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Command> GetAppCommands()
         {
             var commands = new List<Command>

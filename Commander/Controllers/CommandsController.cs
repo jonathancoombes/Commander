@@ -78,7 +78,7 @@ namespace Commander.Controllers
             var originalCommand = _repositoryRepo.GetCommandById(Id);
 
             if (originalCommand == null) {
-                return NotFound("Command was not found");
+                throw new ArgumentNullException(nameof(originalCommand));
             }
 
             // With this command, the update is allready tracked by the context in EF so, only "save changes is required from the Repo
@@ -104,7 +104,7 @@ namespace Commander.Controllers
             //Checking if resource exists
 
             if (originalCommand == null) {
-                return NotFound();
+                throw new ArgumentNullException(nameof(originalCommand));
             }
             // Mapping originalcommand to a Dto for use
             var commandToPatch = _mapper.Map<CommandUpdateDto>(originalCommand);
@@ -126,6 +126,21 @@ namespace Commander.Controllers
             return NoContent();
         }
 
+        // DELETE api/controllers/{Id}
+        [HttpDelete("{Id}")]
+        public ActionResult DeleteCommand(int Id) {
+
+            var currentCommand = _repositoryRepo.GetCommandById(Id);
+
+            if (currentCommand == null)
+            {
+                throw new ArgumentNullException(nameof(currentCommand));
+            }
+            _repositoryRepo.DeleteCommand(currentCommand);
+
+            return NoContent();
+            
+        }
 
     }
 }
